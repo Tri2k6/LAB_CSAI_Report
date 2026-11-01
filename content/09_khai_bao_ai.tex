@@ -1,32 +1,89 @@
 \section{Khai báo sử dụng AI}
+\label{sec:ai-disclosure}
 
-Nhóm sử dụng OpenAI Codex trong quá trình thực hiện đồ án để phân tích yêu cầu
-đề bài, lập dàn ý báo cáo, rà soát mã nguồn và hỗ trợ chỉnh sửa một số phần
-hiện thực, đặc biệt là heuristic A*. Codex cũng hỗ trợ đối chiếu bản thảo
-LaTeX với mã nguồn, diễn đạt lại nội dung, chạy lệnh kiểm thử và đo hiệu năng,
-biên dịch PDF. Trong vòng rà soát báo cáo, nhóm còn tham khảo các hướng dẫn
-\textit{peer-review}, \textit{scientific-writing} và
-\textit{scientific-visualization} thuộc bộ
+\subsection{Phạm vi sử dụng}
+
+Nhóm sử dụng OpenAI Codex để hỗ trợ lập kế hoạch, đối chiếu báo cáo với mã
+nguồn, chỉnh sửa heuristic A*, kiểm thử và trình bày kết quả. Codex đưa ra đề
+xuất hoặc thực hiện thao tác theo yêu cầu; nhóm kiểm tra đề xuất về thuật toán
+với luật chơi và hàm chi phí, kiểm tra phần mô tả với mã nguồn. Số liệu thực
+nghiệm lấy từ chương trình đo, không lấy từ câu trả lời do AI tự tạo. Trong
+quá trình rà soát, nhóm còn tham khảo các hướng dẫn \textit{peer-review},
+\textit{scientific-writing} và \textit{scientific-visualization} thuộc bộ
 \textit{Scientific Agent Skills}~\cite{scientificagentskills2026}.
 
-Dưới đây là các trích đoạn nguyên văn từ những yêu cầu đã gửi Codex trong các
-phiên làm việc của đồ án. Các đoạn trích minh họa cách nhóm sử dụng công cụ,
-không phải toàn bộ lịch sử trao đổi:
+\subsection{Các tương tác tiêu biểu}
 
-\begin{itemize}
-    \item \textbf{Lập kế hoạch báo cáo:} ``Tôi muốn bạn dựa vào nội dung yêu cầu
-    của đề bài thì hãy tạo ra cho tôi một file kế hoạch viết report + làm video''
-    \item \textbf{Rà soát báo cáo với mã nguồn:} ``Đối chiếu toàn bộ Chương 1 và
-    Chương 2 của báo cáo với implementation thực tế.''
-    \item \textbf{Điều chỉnh thuật toán:} ``Vậy thì bạn chọn cho tôi một cái
-    heuristic mới đi á đảm bảo tính admissible á. Sửa luôn code cho tôi á.''
-    \item \textbf{Rà soát mã nguồn:} ``Kiểm tra source code lần cuối cho tôi á.
-    Sau đó chúng ta sẽ freeze nó lại luôn á''
-\end{itemize}
+Các đoạn dưới đây là trích đoạn nguyên văn từ yêu cầu nhóm đã gửi Codex trong
+các phiên làm việc của đồ án; cách viết và lỗi chính tả trong prompt được giữ
+nguyên. Chúng cho thấy mục đích sử dụng công cụ, không đại diện cho toàn bộ
+lịch sử trao đổi.
 
-Những nội dung do Codex đề xuất được nhóm đối chiếu với mã nguồn và đề bài
-trước khi đưa vào báo cáo. Số liệu và biểu đồ được lấy từ chương trình đo hiệu
-năng: 180 lượt chạy trên 15 màn chơi; tập lệnh kiểm chứng xác nhận 60/60 lời
-giải hợp lệ. Bộ kiểm thử đạt 203/203 trường hợp trong môi trường thực nghiệm.
-Nhóm chịu trách nhiệm cuối cùng về nội dung báo cáo, mã nguồn và việc đánh giá
-mức đóng góp của từng thành viên.
+\subsubsection{Lập kế hoạch báo cáo và video}
+
+\noindent\textbf{Prompt (trích đoạn):}
+\begin{quote}
+\small\itshape
+Tôi muốn bạn dựa vào nội dung yêu cầu của đề bài thì hãy tạo ra cho tôi một
+file kế hoạch viết report + làm video
+\end{quote}
+
+Nhóm dùng tương tác này để chuyển các hạng mục của đề bài thành kế hoạch thực
+hiện: phân công, mô tả thuật toán, thực nghiệm, tài liệu tham khảo và video
+demo. Kế hoạch là tài liệu tổ chức công việc; nhóm vẫn đối chiếu từng hạng mục
+với đề bài chính thức trước khi đưa vào bản nộp.
+
+\subsubsection{Đối chiếu báo cáo với chương trình}
+
+\noindent\textbf{Prompt (trích đoạn):}
+\begin{quote}
+\small\itshape
+Đối chiếu toàn bộ Chương 1 và Chương 2 của báo cáo với implementation thực
+tế.
+\end{quote}
+
+Codex được yêu cầu tìm những chỗ mô tả trạng thái, luật chơi, kiến trúc hoặc
+chức năng giao diện chưa khớp với mã nguồn. Nhóm dùng kết quả rà soát để sửa
+cách diễn đạt và kiểm tra lại các tệp hiện thực liên quan. Vì vậy, phần mô tả
+trong báo cáo dựa trên hành vi của chương trình, không chỉ dựa trên bản thảo
+do AI đề xuất.
+
+\subsubsection{Thiết kế lại heuristic A*}
+
+\noindent\textbf{Prompt (trích đoạn):}
+\begin{quote}
+\small\itshape
+Vậy thì bạn chọn cho tôi một cái heuristic mới đi á đảm bảo tính admissible
+á. Sửa luôn code cho tôi á.
+\end{quote}
+
+Tương tác này liên quan trực tiếp tới phần hiện thực: Codex hỗ trợ xây dựng và
+chỉnh sửa heuristic để phù hợp với hàm chi phí 0/1/2 và cơ chế tách khối.
+Nhóm đối chiếu kết quả với luật chơi, bộ kiểm thử và lập luận cận dưới ở
+Mục~\ref{sec:algorithms}. Phép kiểm tra hữu hạn trên bộ màn chơi bổ sung cho
+lập luận, không thay thế việc chứng minh điều kiện áp dụng.
+
+\subsubsection{Chạy lại thực nghiệm}
+
+\noindent\textbf{Prompt (trích đoạn):}
+\begin{quote}
+\small\itshape
+Bây giờ tôi muốn bạn kiểm tra xem chúng ta có phải là source code mới nhất
+chưa TH\_AI\_LABS\_1 á rồi pull cái main mới nhất về. Rồi sau đó chạy lại
+benmark lại một lần nữa cho tôi á
+\end{quote}
+
+Codex hỗ trợ cập nhật mã nguồn, chạy lại benchmark và đồng bộ CSV, bảng cùng
+biểu đồ trong báo cáo. Bộ số liệu cuối gồm 180 lượt chạy trên 15 màn chơi;
+tập lệnh kiểm chứng đối chiếu CSV và xác nhận 60/60 lời giải hợp lệ. Nhóm dùng
+những tệp kết quả này để viết phần phân tích, đồng thời nêu giới hạn về số màn
+chơi, số lần lặp và phép đo bộ nhớ.
+
+\subsection{Kiểm chứng và trách nhiệm}
+
+Nhóm chịu trách nhiệm về lựa chọn thuật toán, tính đúng đắn của mã nguồn, cách
+diễn giải số liệu, nội dung báo cáo và mức độ hoàn thành của từng thành viên.
+Mã nguồn dùng cho thực nghiệm đạt 203/203 trường hợp kiểm thử. Những nội dung
+Codex đề xuất chỉ được sử dụng sau khi đối chiếu với đề bài, mã nguồn hoặc dữ
+liệu thực nghiệm tương ứng. Các trích đoạn trên không phải danh sách đầy đủ
+các prompt.
