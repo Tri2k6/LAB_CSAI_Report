@@ -191,7 +191,7 @@ khối và hoạt ảnh theo trạng thái cùng các sự kiện của \texttt{
     \includegraphics[width=\linewidth]{stage_07_split_blocks.png}
     \caption{Hai khối tách ở màn 07}
 \end{subfigure}
-\caption{Giao diện 3D hiện có của Bloxorz Solver}
+\caption{Giao diện 3D minh họa các cơ chế nâng cao của Bloxorz Solver}
 \label{fig:gui-mechanics}
 \end{figure}
 
@@ -201,11 +201,9 @@ xử lý qua \texttt{GameEngine}; trạng thái hiển thị chỉ cập nhật 
 kết thúc. New Game bắt đầu từ màn 01, Load Stage cho phép chọn màn khác, còn
 Restart đưa màn hiện tại về trạng thái đầu.
 
-Khi người chơi chọn một thuật toán
-trong menu Solve, giao diện đặt lại màn hiện tại rồi chuyển trạng thái đầu cho
-bộ giải chạy trên luồng nền.
-
-Luồng nền kiểm chứng lời giải tìm được trước khi gửi kết quả qua hàng đợi về bộ
+Khi người chơi chọn thuật toán từ menu Solve, giao diện đưa màn hiện tại về
+trạng thái đầu và giao trạng thái đó cho bộ giải chạy trên luồng nền. Luồng
+nền kiểm chứng lời giải tìm được trước khi gửi kết quả qua hàng đợi về bộ
 điều khiển. Mỗi yêu cầu giải có một mã riêng (\texttt{request\_id}); kết quả
 cũ bị bỏ qua nếu người chơi hủy tìm kiếm, khởi động lại hoặc đổi màn. Với kết
 quả \texttt{FOUND}, bộ phát lại thực hiện từng hành động qua cùng

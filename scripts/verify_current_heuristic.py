@@ -1,6 +1,6 @@
 """Check the current A* heuristic against exact remaining costs on 15 levels.
 
-Run from any directory: python3 Report_2/scripts/verify_current_heuristic.py
+Run from any directory: python3 Report/scripts/verify_current_heuristic.py
 This reads the frozen solver and level files; it does not run benchmarks or
 write source, tests, CSV, or report data.
 """

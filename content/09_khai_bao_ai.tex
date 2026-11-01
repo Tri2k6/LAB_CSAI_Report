@@ -1,32 +1,73 @@
 \section{Khai báo sử dụng AI}
 
-Nhóm sử dụng OpenAI Codex trong quá trình thực hiện đồ án để phân tích yêu cầu
-đề bài, lập dàn ý báo cáo, rà soát mã nguồn và hỗ trợ chỉnh sửa một số phần
-hiện thực, đặc biệt là heuristic A*. Codex cũng hỗ trợ đối chiếu bản thảo
-LaTeX với mã nguồn, diễn đạt lại nội dung, chạy lệnh kiểm thử và đo hiệu năng,
-biên dịch PDF. Trong vòng rà soát báo cáo, nhóm còn tham khảo các hướng dẫn
-\textit{peer-review}, \textit{scientific-writing} và
-\textit{scientific-visualization} thuộc bộ
-\textit{Scientific Agent Skills}~\cite{scientificagentskills2026}.
+\subsection{Phạm vi và mục đích sử dụng}
 
-Dưới đây là các trích đoạn nguyên văn từ những yêu cầu đã gửi Codex trong các
-phiên làm việc của đồ án. Các đoạn trích minh họa cách nhóm sử dụng công cụ,
-không phải toàn bộ lịch sử trao đổi:
+Trong quá trình thực hiện đồ án Bloxorz Solver, nhóm sử dụng \textbf{OpenAI Codex} như một công cụ hỗ trợ phân tích, phát triển và rà soát sản phẩm. Công cụ được sử dụng ở nhiều giai đoạn, bao gồm phân tích yêu cầu đề bài, lập kế hoạch báo cáo và video, kiểm tra mã nguồn, hỗ trợ điều chỉnh một số phần hiện thực, tổ chức thực nghiệm và hoàn thiện báo cáo \LaTeX.
 
+Mức độ tham gia của AI không đồng nhất giữa các công việc. Đối với tài liệu, Codex chủ yếu hỗ trợ tổ chức nội dung, đối chiếu mô tả với implementation và cải thiện cách trình bày. Đối với mã nguồn, công cụ còn được sử dụng để đề xuất và hỗ trợ thực hiện các thay đổi kỹ thuật, đáng chú ý nhất là heuristic của thuật toán A*.
+
+Nhóm xem kết quả do AI đưa ra là các đề xuất cần được đánh giá, không mặc nhiên coi chúng là chính xác. Các thay đổi được tiếp nhận phải phù hợp với yêu cầu đề bài, mô hình trạng thái của trò chơi và hành vi quan sát được qua kiểm thử.
+
+\subsection{Các tương tác tiêu biểu}
+
+Các trích đoạn dưới đây được giữ nguyên từ những yêu cầu thực tế đã gửi Codex. Chúng được lựa chọn để minh họa các hình thức sử dụng AI trong đồ án, không đại diện cho toàn bộ lịch sử trao đổi.
+
+\paragraph{1. Hỗ trợ lập kế hoạch và tổ chức báo cáo}
+\begin{quote}
+\textit{``Tôi muốn bạn dựa vào nội dung yêu cầu của đề bài thì hãy tạo ra cho tôi một file kế hoạch viết report + làm video''}
+\end{quote}
+
+Mục đích của tương tác này là chuyển các yêu cầu trong đề thành một kế hoạch thực hiện có cấu trúc, bảo đảm báo cáo và video trình bày được những thành phần cần thiết của đồ án. Những nội dung cần bao phủ bao gồm gameplay, các thuật toán tìm kiếm, thực nghiệm so sánh và phần trình diễn chức năng.
+
+Việc lập kế hoạch bằng AI hỗ trợ tổ chức quá trình thực hiện và giảm nguy cơ bỏ sót tiêu chí. Tuy nhiên, kế hoạch không thay thế đề bài chính thức; các hạng mục cuối cùng vẫn phải được kiểm tra lại với yêu cầu của môn học.
+
+\paragraph{2. Đối chiếu báo cáo với implementation}
+\begin{quote}
+\textit{``Đối chiếu toàn bộ Chương 1 và Chương 2 của báo cáo với implementation thực tế.''}
+\end{quote}
+
+Tương tác này nhằm kiểm tra sự nhất quán giữa các mô tả trong báo cáo và hệ thống đã hiện thực. Đối với một trò chơi có nhiều loại trạng thái và cơ chế tương tác như Bloxorz, sự khác biệt giữa mô tả lý thuyết và mã nguồn có thể dẫn đến việc báo cáo trình bày những tính năng không tồn tại, hoặc giải thích sai quy tắc chuyển trạng thái.
+
+Do đó, AI được sử dụng để hỗ trợ rà soát mô hình trò chơi, các thao tác điều khiển, cách biểu diễn trạng thái và cơ chế hoạt động của giao diện. Nội dung báo cáo cuối cùng cần phản ánh cách hệ thống thực sự vận hành, thay vì chỉ mô tả một thiết kế dự kiến.
+
+\paragraph{3. Hỗ trợ điều chỉnh heuristic A*}
+\begin{quote}
+\textit{``Vậy thì bạn chọn cho tôi một cái heuristic mới đi á đảm bảo tính admissible á. Sửa luôn code cho tôi á.''}
+\end{quote}
+
+Đây là một trong những trường hợp AI tham gia trực tiếp vào nội dung kỹ thuật của đồ án.
+
+Khác với các bài toán tìm đường trên lưới thông thường, trạng thái Bloxorz phụ thuộc vào vị trí, hướng của khối, cấu hình cầu và các cơ chế đặc biệt như Split Switch. Vì vậy, việc xây dựng heuristic cho A* phải xét đến khả năng một hành động làm thay đổi trạng thái theo cách không tương ứng với khoảng cách hình học thông thường.
+
+Codex được yêu cầu hỗ trợ lựa chọn và điều chỉnh heuristic với mục tiêu duy trì tính admissible, tức là không đánh giá cao hơn chi phí tối ưu còn lại. Implementation cuối cùng sử dụng một cận dưới có xét đến khả năng teleport, thay vì chỉ áp dụng trực tiếp khoảng cách Manhattan.
+
+Việc AI đề xuất hoặc hỗ trợ sửa heuristic không được xem là bằng chứng về tính đúng đắn của nó. Nhóm cần đánh giá lập luận về cận dưới và kiểm tra hành vi của A* trên các màn chơi, đặc biệt là những màn có cơ chế nâng cao. Phương pháp heuristic cuối cùng và cơ sở lập luận được trình bày trong phần thuật toán của báo cáo.
+
+\paragraph{4. Rà soát mã nguồn trước khi hoàn thiện}
+\begin{quote}
+\textit{``Kiểm tra source code lần cuối cho tôi á. Sau đó chúng ta sẽ freeze nó lại luôn á''}
+\end{quote}
+
+Mục đích của bước rà soát cuối là kiểm tra tính nhất quán và độ ổn định của hệ thống trước khi đóng gói sản phẩm. Công việc này bao gồm việc xem xét các thành phần gameplay và solver, tổ chức mã nguồn, khả năng chạy kiểm thử và các vấn đề có thể ảnh hưởng đến bản nộp.
+
+Kết quả rà soát bằng AI được xem là một lớp hỗ trợ phát hiện vấn đề. Việc AI không phát hiện lỗi không có nghĩa là hệ thống đã được chứng minh hoàn toàn không có lỗi; các kết luận vẫn cần dựa trên kiểm thử và kết quả thực thi.
+
+\subsection{Kiểm chứng các kết quả có sự hỗ trợ của AI}
+
+Nhóm sử dụng nhiều hình thức kiểm chứng thay vì chỉ dựa vào câu trả lời do AI tạo ra:
 \begin{itemize}
-    \item \textbf{Lập kế hoạch báo cáo:} ``Tôi muốn bạn dựa vào nội dung yêu cầu
-    của đề bài thì hãy tạo ra cho tôi một file kế hoạch viết report + làm video''
-    \item \textbf{Rà soát báo cáo với mã nguồn:} ``Đối chiếu toàn bộ Chương 1 và
-    Chương 2 của báo cáo với implementation thực tế.''
-    \item \textbf{Điều chỉnh thuật toán:} ``Vậy thì bạn chọn cho tôi một cái
-    heuristic mới đi á đảm bảo tính admissible á. Sửa luôn code cho tôi á.''
-    \item \textbf{Rà soát mã nguồn:} ``Kiểm tra source code lần cuối cho tôi á.
-    Sau đó chúng ta sẽ freeze nó lại luôn á''
+    \item \textbf{Kiểm chứng chức năng:} Hệ thống có bộ kiểm thử tự động cho các thành phần của trò chơi và thuật toán tìm kiếm. Trong môi trường thực nghiệm được báo cáo, bộ kiểm thử đạt 203/203 trường hợp. Kết quả này cung cấp bằng chứng về các hành vi đã được bao phủ bởi test suite, nhưng không bảo đảm rằng mọi trạng thái hoặc trường hợp biên đều đã được kiểm tra.
+    \item \textbf{Kiểm chứng lời giải:} Các đường đi do solver tạo ra được kiểm tra bằng cơ chế thực thi lại các hành động theo luật trò chơi. Tập lệnh kiểm chứng xác nhận 60/60 lời giải hợp lệ. Điều này giúp kiểm tra rằng các chuỗi hành động được báo cáo có thể thực hiện và dẫn đến trạng thái chiến thắng, thay vì chỉ tin vào trạng thái \texttt{FOUND} do solver trả về.
+    \item \textbf{Kiểm chứng thực nghiệm:} Các bảng số liệu và biểu đồ được xây dựng từ chương trình đo hiệu năng trên 15 màn chơi, với tổng cộng 180 lượt chạy. Nhóm sử dụng dữ liệu thực thi để trình bày thời gian tìm kiếm, bộ nhớ đỉnh, số node mở rộng và chiều dài lời giải, không sử dụng số liệu do AI tự tạo.
+    \item \textbf{Kiểm chứng báo cáo:} Nội dung thuật toán, mô hình trạng thái và cách giải thích kết quả được đối chiếu với mã nguồn, dữ liệu thực nghiệm và yêu cầu của đề trước khi hoàn thiện báo cáo.
 \end{itemize}
 
-Những nội dung do Codex đề xuất được nhóm đối chiếu với mã nguồn và đề bài
-trước khi đưa vào báo cáo. Số liệu và biểu đồ được lấy từ chương trình đo hiệu
-năng: 180 lượt chạy trên 15 màn chơi; tập lệnh kiểm chứng xác nhận 60/60 lời
-giải hợp lệ. Bộ kiểm thử đạt 203/203 trường hợp trong môi trường thực nghiệm.
-Nhóm chịu trách nhiệm cuối cùng về nội dung báo cáo, mã nguồn và việc đánh giá
-mức đóng góp của từng thành viên.
+Các hoạt động kiểm chứng nói trên giúp giảm nguy cơ tiếp nhận những đề xuất AI không chính xác, đồng thời cung cấp bằng chứng độc lập hơn cho các kết luận kỹ thuật của đồ án.
+
+\subsection{Giới hạn và trách nhiệm}
+
+AI hỗ trợ đáng kể cho quá trình phát triển và trình bày đồ án, nhưng cũng có những giới hạn cần được nhận thức rõ. Một đề xuất sửa mã nguồn có thể giải quyết một trường hợp cụ thể mà vẫn bỏ sót các trường hợp biên. Tương tự, một lập luận heuristic có vẻ hợp lý chưa chắc đã đủ để bảo đảm tính admissible trong toàn bộ không gian trạng thái, đặc biệt khi trò chơi có cơ chế thay đổi trạng thái phức tạp.
+
+Bên cạnh Codex, trong vòng rà soát báo cáo, nhóm có tham khảo các hướng dẫn \textit{peer-review}, \textit{scientific-writing} và \textit{scientific-visualization} thuộc bộ Scientific Agent Skills~\cite{scientificagentskills2026} để hỗ trợ việc đánh giá chất lượng diễn đạt và trình bày kết quả.
+
+Nhóm chịu trách nhiệm cuối cùng đối với các quyết định kỹ thuật, mã nguồn được nộp, tính chính xác của số liệu, nội dung báo cáo và việc đánh giá đóng góp của từng thành viên. Việc sử dụng AI được khai báo nhằm làm rõ quy trình thực hiện và vai trò của công cụ hỗ trợ, không thay thế trách nhiệm hiểu, kiểm tra và giải thích sản phẩm của nhóm.
