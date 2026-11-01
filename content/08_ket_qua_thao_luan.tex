@@ -21,10 +21,10 @@ Mỗi thuật toán được chạy ba lần trên từng màn chơi.
 & \textbf{Thời gian (ms)} & \textbf{Bộ nhớ (KiB)} & \textbf{Nút}
 & \textbf{Độ dài} & \textbf{Thao tác} & \textbf{Chi phí} \\
 \midrule
-BFS & 73,80 & 174,31 & 619,73 & 15,40 & 16,00 & 16,00 \\
-DFS & 53,19 & 143,96 & 438,20 & 125,20 & 139,87 & 139,87 \\
-UCS & 96,95 & 173,99 & 671,33 & 15,40 & 16,00 & 16,00 \\
-A*  & 57,07 & 120,87 & 350,60 & 15,40 & 16,07 & 16,00 \\
+BFS & 68,35 & 174,31 & 619,73 & 15,40 & 16,00 & 16,00 \\
+DFS & 49,74 & 143,96 & 438,20 & 125,20 & 139,87 & 139,87 \\
+UCS & 89,54 & 174,00 & 671,33 & 15,40 & 16,00 & 16,00 \\
+A*  & 52,25 & 120,87 & 350,60 & 15,40 & 16,07 & 16,00 \\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -69,7 +69,7 @@ Matplotlib~\cite{matplotlib311}. Số liệu từng màn chơi và độ lệch 
 
 \subsection{Chất lượng lời giải và đánh đổi}
 
-DFS có thời gian trung bình thấp nhất, 53,19 ms, nhưng lời giải dài trung bình
+DFS có thời gian trung bình thấp nhất, 49,74 ms, nhưng lời giải dài trung bình
 125,20 bước; ở màn chơi 15 con số này lên tới 724 bước. Vì thế, tốc độ của DFS
 phụ thuộc mạnh vào thứ tự sinh trạng thái kế tiếp và không chứng tỏ chất lượng
 lời giải. BFS cho lời giải ít hành động, nhưng tập chờ xét rộng và không xét
@@ -82,7 +82,7 @@ trung bình 350,60 nút: thấp hơn BFS 43,4\% và UCS 47,8\%. Tại màn chơi
 A* mở rộng 168 nút, so với 1.725 của BFS và 2.191 của UCS.
 
 Số nút mở rộng ít hơn không bảo đảm thời gian thấp hơn. Ở màn chơi 15, A* mất
-631,90 ms trong khi BFS mất 534,95 ms; thời gian tính heuristic và quản lý hàng
+577,35 ms trong khi BFS mất 488,68 ms; thời gian tính heuristic và quản lý hàng
 đợi ưu tiên có thể lớn hơn phần thời gian tiết kiệm nhờ mở rộng ít nút. Trên bộ
 15 màn chơi này, A* đạt sự cân bằng tốt giữa chất lượng lời giải, số nút mở rộng
 và bộ nhớ. UCS là mốc đối chiếu về chi phí tối ưu; BFS đơn giản nhưng dùng nhiều
