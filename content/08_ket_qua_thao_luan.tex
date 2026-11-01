@@ -44,6 +44,13 @@ Hình~\ref{fig:benchmark-nodes} được tạo từ cùng bộ CSV bằng
 Matplotlib~\cite{matplotlib311}. Số liệu từng màn chơi và độ lệch chuẩn thời gian
 được lưu trong tệp \texttt{data/benchmark\_summary.csv} đi kèm báo cáo.
 
+Các màn chơi có nhiều cơ chế kết hợp tạo ra chênh lệch rõ hơn giữa các bộ giải.
+Ở màn chơi 10, A* mở rộng 168 nút, so với 1.725 nút của BFS và 2.191 nút của
+UCS; thời gian tìm kiếm tương ứng là 27,79 ms, 209,60 ms và 313,93 ms.
+Ngược lại, tại màn chơi 15, A* mở rộng ít nút hơn BFS (3.729 so với 4.317)
+nhưng mất nhiều thời gian hơn (577,35 ms so với 488,68 ms). Vì vậy, giảm số
+nút mở rộng không đồng nghĩa với giảm thời gian ở mọi màn chơi.
+
 \begin{figure}[!tbp]
 \centering
 \begin{subfigure}[b]{0.96\textwidth}
@@ -67,6 +74,8 @@ Matplotlib~\cite{matplotlib311}. Số liệu từng màn chơi và độ lệch 
 \label{fig:benchmark-nodes}
 \end{figure}
 
+\FloatBarrier
+
 \subsection{Chất lượng lời giải và đánh đổi}
 
 DFS có thời gian trung bình thấp nhất, 49,74 ms, nhưng lời giải dài trung bình
@@ -78,16 +87,13 @@ chi phí của ô Fragile.
 UCS tối ưu theo hàm chi phí 0/1/2 nhưng mở rộng trung bình 671,33 nút và có
 thời gian trung bình cao nhất trong bốn thuật toán do không có thông tin hướng
 đích. A* đạt cùng chi phí với UCS trên cả 15 màn chơi, đồng thời chỉ mở rộng
-trung bình 350,60 nút: thấp hơn BFS 43,4\% và UCS 47,8\%. Tại màn chơi 10,
-A* mở rộng 168 nút, so với 1.725 của BFS và 2.191 của UCS.
+trung bình 350,60 nút: thấp hơn BFS 43,4\% và UCS 47,8\%.
 
-Số nút mở rộng ít hơn không bảo đảm thời gian thấp hơn. Ở màn chơi 15, A* mất
-577,35 ms trong khi BFS mất 488,68 ms; thời gian tính heuristic và quản lý hàng
-đợi ưu tiên có thể lớn hơn phần thời gian tiết kiệm nhờ mở rộng ít nút. Trên bộ
-15 màn chơi này, A* đạt sự cân bằng tốt giữa chất lượng lời giải, số nút mở rộng
-và bộ nhớ. UCS là mốc đối chiếu về chi phí tối ưu; BFS đơn giản nhưng dùng nhiều
-bộ nhớ cho tập chờ xét; DFS nhanh ở một số màn chơi nhưng chất lượng lời giải
-không ổn định.
+Thời gian tính heuristic và quản lý hàng đợi ưu tiên có thể lớn hơn phần thời
+gian tiết kiệm nhờ mở rộng ít nút. Trên bộ 15 màn chơi này, A* đạt sự cân bằng
+tốt giữa chất lượng lời giải, số nút mở rộng và bộ nhớ. UCS là mốc đối chiếu về
+chi phí tối ưu; BFS đơn giản nhưng dùng nhiều bộ nhớ cho tập chờ xét; DFS nhanh
+ở một số màn chơi nhưng chất lượng lời giải không ổn định.
 
 Các nhận xét này chỉ dựa trên 15 màn chơi do nhóm xây dựng và ba lần lặp. Bộ
 nhớ đỉnh là lượng cấp phát do \texttt{tracemalloc} theo dõi, không phải tổng
