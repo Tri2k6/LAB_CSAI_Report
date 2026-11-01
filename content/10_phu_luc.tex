@@ -2,6 +2,9 @@
 \section{Kết quả thực nghiệm đầy đủ}
 
 Bảng~\ref{tab:full-benchmark} trình bày trung bình của ba lượt. Cột Time kèm độ
-lệch chuẩn tổng thể; Memory là peak Python-traced memory trung bình theo KiB.
+lệch chuẩn tổng thể; Memory là bộ nhớ đỉnh Python được theo dõi, lấy trung bình
+theo KiB. Length chỉ đếm bước di chuyển. Cost của BFS/DFS tính mỗi hành động
+là một đơn vị, còn UCS/A* dùng hàm chi phí 0/1/2; chỉ so sánh trực tiếp Cost
+giữa hai thuật toán sau.
 
 \input{content/benchmark_full_table}
