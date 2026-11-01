@@ -1,22 +1,31 @@
 \section{Khai báo sử dụng AI}
 
-Nhóm sử dụng OpenAI Codex để hỗ trợ đọc và đối chiếu yêu cầu đề bài với mã
-nguồn, đề xuất cấu trúc LaTeX, diễn đạt bản nháp tiếng Việt, chạy đo hiệu năng và
-kiểm tra lỗi biên dịch. Dưới đây là ba trích đoạn nguyên văn từ các yêu cầu nhóm
-đã gửi trong quá trình làm báo cáo:
+Nhóm sử dụng OpenAI Codex trong quá trình thực hiện đồ án để phân tích yêu cầu
+đề bài, lập dàn ý báo cáo, rà soát mã nguồn và hỗ trợ chỉnh sửa một số phần
+hiện thực, đặc biệt là heuristic A*. Codex cũng hỗ trợ đối chiếu bản thảo
+LaTeX với mã nguồn, diễn đạt lại nội dung, chạy lệnh kiểm thử và đo hiệu năng,
+biên dịch PDF. Trong vòng rà soát báo cáo, nhóm còn tham khảo các hướng dẫn
+\textit{peer-review} và \textit{scientific-visualization} thuộc bộ
+\textit{Scientific Agent Skills}~\cite{scientificagentskills2026}.
+
+Dưới đây là các trích đoạn nguyên văn từ những yêu cầu đã gửi Codex trong các
+phiên làm việc của đồ án. Các đoạn trích minh họa cách nhóm sử dụng công cụ,
+không phải toàn bộ lịch sử trao đổi:
 
 \begin{itemize}
-    \item ``Đối chiếu toàn bộ Chương 1 và Chương 2 của báo cáo với implementation thực tế.''
-    \item ``Kiểm tra lập luận admissibility theo cost chuẩn 0/1/2.''
-    \item ``Biên dịch PDF bằng latexmk.''
+    \item \textbf{Lập kế hoạch báo cáo:} ``Tôi muốn bạn dựa vào nội dung yêu cầu
+    của đề bài thì hãy tạo ra cho tôi một file kế hoạch viết report + làm video''
+    \item \textbf{Rà soát báo cáo với mã nguồn:} ``Đối chiếu toàn bộ Chương 1 và
+    Chương 2 của báo cáo với implementation thực tế.''
+    \item \textbf{Điều chỉnh thuật toán:} ``Vậy thì bạn chọn cho tôi một cái
+    heuristic mới đi á đảm bảo tính admissible á. Sửa luôn code cho tôi á.''
+    \item \textbf{Rà soát mã nguồn:} ``Kiểm tra source code lần cuối cho tôi á.
+    Sau đó chúng ta sẽ freeze nó lại luôn á''
 \end{itemize}
 
-Trong vòng rà soát cuối, quá trình hỗ trợ còn tham khảo các hướng dẫn \textit{peer-review}
-và \textit{scientific-visualization} thuộc bộ \textit{Scientific Agent
-Skills}~\cite{scientificagentskills2026} để kiểm tra nội dung và biểu đồ.
-
-Mọi mô tả thuật toán được đối chiếu lại với mã nguồn; số liệu được lấy từ 180
-lượt đo hiệu năng thực tế và lời giải được kiểm tra bằng bộ kiểm chứng. AI
-không được dùng để tạo số liệu giả, xác định mức đóng góp cá nhân hoặc thay thế
-việc kiểm tra nội dung của nhóm. Các thành viên chịu trách nhiệm cuối cùng đối
-với nội dung được đưa vào báo cáo.
+Những nội dung do Codex đề xuất được nhóm đối chiếu với mã nguồn và đề bài
+trước khi đưa vào báo cáo. Số liệu và biểu đồ được lấy từ chương trình đo hiệu
+năng: 180 lượt chạy trên 15 màn chơi; tập lệnh kiểm chứng xác nhận 60/60 lời
+giải hợp lệ. Bộ kiểm thử đạt 203/203 trường hợp trong môi trường thực nghiệm.
+Nhóm chịu trách nhiệm cuối cùng về nội dung báo cáo, mã nguồn và việc đánh giá
+mức đóng góp của từng thành viên.
