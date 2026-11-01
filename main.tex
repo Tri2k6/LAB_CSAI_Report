@@ -1,0 +1,59 @@
+\documentclass[12pt]{article}
+
+\usepackage{hcmus-report-template}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.35em}
+\renewcommand{\baselinestretch}{1.35}
+\graphicspath{{img/}{img/gui/}{img/benchmark/}}
+
+\input{content/00_metadata}
+
+\lhead{\reportname}
+\rhead{Trường Đại học Khoa học Tự nhiên -- ĐHQG-HCM\\\coursecode\ -- \coursename}
+\newcommand{\videofooter}{%
+\if\relax\detokenize\expandafter{\videourl}\relax
+    Video demo: URL sẽ bổ sung%
+\else
+    \href{\videourl}{Video demo}%
+\fi
+}
+\fancyfoot[L]{\footnotesize\videofooter}
+\fancypagestyle{titlevideo}{%
+    \fancyhf{}%
+    \fancyfoot[L]{\footnotesize\videofooter}%
+    \renewcommand{\headrulewidth}{0pt}%
+    \renewcommand{\footrulewidth}{0pt}%
+}
+
+\begin{document}
+
+\pagenumbering{roman}
+\hypersetup{pageanchor=false}
+\input{content/title}
+\hypersetup{pageanchor=true}
+\setcounter{page}{1}
+
+\tableofcontents
+\clearpage
+\input{content/03_ke_hoach_phan_cong}
+\clearpage
+
+\pagenumbering{arabic}
+\setcounter{page}{1}
+
+\input{content/02_gioi_thieu}
+\input{content/06_thiet_ke_he_thong}
+\input{content/05_thuat_toan_tim_kiem}
+\input{content/07_thiet_ke_thuc_nghiem}
+\input{content/08_ket_qua_thao_luan}
+\input{content/09_ket_luan}
+
+\input{ref/ref}
+
+\clearpage
+\appendix
+\input{content/09_khai_bao_ai}
+\input{content/10_phu_luc}
+
+\end{document}

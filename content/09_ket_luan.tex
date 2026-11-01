@@ -1,0 +1,39 @@
+\section{Kết luận và hướng phát triển}
+
+\subsection{Chức năng và kết quả đạt được}
+
+Đồ án đã hiện thực trò chơi Bloxorz 3D có thể điều khiển bằng tay, gồm luật cơ
+bản, ô Fragile, cầu, ba loại công tắc và cơ chế tách, đổi khối điều khiển, ghép
+khối. Bốn bộ giải BFS, DFS, UCS, A* dùng chung \texttt{GameEngine}. Giao diện
+hỗ trợ giải trong luồng nền, kiểm chứng và phát lại lời giải. Bộ kiểm thử đạt
+203/203 trường hợp; cả 180 lượt đo hiệu năng đều tìm
+thấy lời giải và tập lệnh độc lập xác nhận 60/60 lời giải hợp lệ.
+
+Trên 15 màn chơi, BFS, UCS và A* có cùng số bước di chuyển trung bình. Khi
+đánh giá lại bằng hàm chi phí chuẩn, đường BFS có chi phí bằng UCS trên cả 15
+màn chơi. DFS có thể nhanh nhưng lời giải dài và nhạy với thứ tự sinh trạng
+thái kế tiếp, nổi bật là 724 bước ở màn chơi 15. A* giảm trung bình 43,4\% số
+nút mở rộng so với BFS và 47,8\% so với UCS, nhưng không luôn nhanh hơn: ở màn
+chơi 15, A* mất 631,90 ms so với
+534,95 ms của BFS.
+
+\subsection{Giới hạn của kết luận}
+
+Heuristic A* dùng cận dưới dựa vào lần dịch chuyển tức thời cuối. Lập luận về
+tính chấp nhận được với hàm chi phí chuẩn nằm ở Mục~\ref{sec:algorithms}.
+Bảo đảm tối ưu của A* không tự áp dụng cho hàm chi phí hoặc heuristic tùy chỉnh.
+Các bảo đảm tìm kiếm cũng đòi hỏi thuật toán không bị hủy, hết thời gian hoặc chạm giới
+hạn nút. Cận hiện hành có thể hướng dẫn tìm kiếm kém hiệu quả ở màn chơi có
+nhiều lần dịch chuyển tức thời.
+
+Các nhận xét thực nghiệm chỉ dựa trên 15 màn chơi và ba lần lặp. Bộ nhớ đỉnh
+là lượng cấp phát Python do \texttt{tracemalloc} theo dõi, không phải tổng RAM
+của tiến trình; thời gian trên màn chơi nhỏ có thể chịu nhiễu hệ điều hành.
+
+\subsection{Hướng phát triển}
+
+Có thể thiết kế cận dưới mạnh hơn có xét cấu trúc kết nối của cầu và công tắc,
+rồi chứng minh và đo lại trước khi thay heuristic mặc định. Các thử nghiệm tiếp
+theo nên thêm màn chơi lớn, màn chơi sinh tự động, nhiều lần lặp với thứ tự
+ngẫu nhiên, đo RSS và hiển thị sai số trên biểu đồ. Về phần mềm, có thể bổ sung
+trình biên tập màn chơi, lưu tiến độ và hoạt ảnh phong phú hơn ở tầng giao diện.

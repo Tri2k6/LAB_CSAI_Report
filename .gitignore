@@ -1,0 +1,29 @@
+# LaTeX build files
+*.aux
+*.bbl
+*.blg
+*.fdb_latexmk
+*.fls
+*.log
+*.out
+*.toc
+*.synctex.gz
+*.nav
+*.snm
+*.vrb
+
+# Temporary page renders
+/main-*.png
+
+# Internal review and drafting notes
+/ACADEMIC_REVIEW.md
+/PEER_REVIEW.md
+/RESTRUCTURE_PLAN.md
+/RESTRUCTURE_SUMMARY.md
+/REVISION_SUMMARY.md
+/WORDING_REVIEW_PLAN.md
+/WORDING_REVISION_SUMMARY.md
+
+# Unused template/draft sources
+/appendix/
+/content/04_mo_hinh_bai_toan.tex

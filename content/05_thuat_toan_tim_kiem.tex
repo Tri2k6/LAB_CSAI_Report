@@ -1,0 +1,253 @@
+\section{Các thuật toán tìm kiếm}
+\label{sec:algorithms}
+
+Trên đồ thị hữu hạn của Chương~\ref{sec:model}, bốn thuật toán khác nhau ở cách
+quản lý tập chờ xét (\emph{frontier}) và chọn trạng thái tiếp theo. Các mã giả
+dưới đây tập trung vào lõi tìm kiếm. Trạng thái đầu được kiểm tra đích ngay;
+các trạng thái còn lại được kiểm tra khi lấy ra khỏi tập chờ xét. Trạng thái
+đích không được tính vào \texttt{expanded\_nodes} vì không sinh trạng thái kế
+tiếp. Chi phí chuẩn đã được định nghĩa ở Bảng~\ref{tab:cost}; riêng BFS và DFS
+coi mỗi hành động là một cạnh đơn vị.
+
+Các bảo đảm đầy đủ và tối ưu dưới đây giả định quá trình tìm kiếm không bị
+\texttt{CANCELLED}, \texttt{TIMEOUT} hoặc \texttt{NODE\_LIMIT}. Mã giả lược bỏ
+các điều kiện dừng tùy chọn để tập trung vào lõi thuật toán. Các cận theo
+$|V|,|E|$ giả định việc sinh trạng thái kế tiếp và tra cứu bảng băm có chi phí
+đơn vị; khi kích thước màn chơi thay đổi, mỗi bước chuyển còn có thể duyệt
+danh sách công tắc và cầu.
+
+\subsection{Breadth-First Search}
+
+BFS duyệt các trạng thái theo độ sâu tăng dần bằng hàng đợi FIFO. Bản cài đặt
+dùng \texttt{deque} của thư viện \texttt{collections}. Từ điển \texttt{parent}
+vừa lưu quan hệ để truy vết lời giải, vừa đánh dấu trạng thái đã thăm. Mỗi
+trạng thái được đánh dấu khi đưa vào hàng đợi nên không bị thêm nhiều lần.
+
+\begin{algorithm}[H]
+\caption{BFS trong hệ thống}
+\label{alg:bfs}
+\begin{algorithmic}[1]
+\Function{BFS}{$engine,start$}
+\State $\mathit{frontier}\gets\langle start\rangle$ (FIFO)
+\State $\mathit{parent}[start]\gets\varnothing$
+\While{$\mathit{frontier}$ không rỗng}
+    \State $s\gets\operatorname{popleft}(\mathit{frontier})$
+    \If{$s$ là Goal} \State \Return \Call{Reconstruct}{$\mathit{parent},s$} \EndIf
+    \State tăng $expanded$
+    \ForAll{$(a,t)\in$ \texttt{engine.get\_successors(s)}}
+        \If{$t\notin\mathit{parent}$}
+            \State $\mathit{parent}[t]\gets(s,a)$
+            \State $\operatorname{append}(\mathit{frontier},t)$
+        \EndIf
+    \EndFor
+\EndWhile
+\State \Return \textsc{NoSolution}
+\EndFunction
+\end{algorithmic}
+\end{algorithm}
+
+Trong BFS, mọi hành động có trọng số 1, kể cả \textsc{SwitchCube}. Do đó đường tìm
+được tối ưu theo \texttt{action\_count}. Đại lượng
+\texttt{solution\_length} chỉ đếm các hành động di chuyển, nên BFS không trực
+tiếp tối ưu đại lượng này. \texttt{solution\_cost} của BFS bằng số hành động,
+khác chi phí chuẩn của UCS và A*.
+
+Với đồ thị hữu hạn, BFS đầy đủ và tối ưu theo số cạnh đơn vị. Bản tìm kiếm trên
+đồ thị có thời gian $O(|V|+|E|)$ và bộ nhớ $O(|V|)$; theo ký hiệu cây tìm kiếm thường
+gặp, số nút có thể tăng theo $O(b^d)$, trong đó $b$ là hệ số phân nhánh và $d$
+là độ sâu lời giải nông nhất.
+
+\subsection{Depth-First Search}
+
+Nhóm chọn DFS tìm kiếm trên đồ thị, không dùng tìm kiếm sâu dần (IDS). Tập chờ xét
+là \texttt{list} hoạt động như ngăn xếp. \texttt{GameEngine} trả các trạng thái
+kế tiếp theo thứ tự Up, Down, Left, Right, SwitchCube; bản cài đặt đưa chúng
+vào ngăn xếp theo thứ tự ngược để trạng thái đầu tiên được lấy ra trước.
+
+\begin{algorithm}[H]
+\caption{DFS có chống lặp}
+\label{alg:dfs}
+\begin{algorithmic}[1]
+\Function{DFS}{$engine,start$}
+\State $\mathit{frontier}\gets\langle start\rangle$ (stack)
+\State $\mathit{parent}[start]\gets\varnothing$
+\While{$\mathit{frontier}$ không rỗng}
+    \State $s\gets\operatorname{pop}(\mathit{frontier})$
+    \If{$s$ là Goal} \State \Return \Call{Reconstruct}{$\mathit{parent},s$} \EndIf
+    \State tăng $expanded$
+    \ForAll{$(a,t)$ theo thứ tự ngược của \texttt{engine.get\_successors(s)}}
+        \If{$t\notin\mathit{parent}$}
+            \State $\mathit{parent}[t]\gets(s,a)$
+            \State $\operatorname{append}(\mathit{frontier},t)$
+        \EndIf
+    \EndFor
+\EndWhile
+\State \Return \textsc{NoSolution}
+\EndFunction
+\end{algorithmic}
+\end{algorithm}
+
+Tập trạng thái đã thăm ngăn DFS lặp vô hạn khi lăn ngược hoặc đổi khối điều
+khiển hai lần. Trên đồ thị hữu hạn, DFS sẽ tìm thấy Goal nếu tồn tại đường đi
+tới đó. Lời giải đầu tiên phụ thuộc vào thứ tự trạng thái kế tiếp và không bảo
+đảm tối ưu số bước hay chi phí. Thời gian là $O(|V|+|E|)$; bộ nhớ của bản cài
+đặt vẫn có thể đạt $O(|V|)$ vì phải lưu trạng thái đã thăm và quan hệ truy vết,
+dù ngăn xếp DFS thường nhỏ hơn hàng đợi BFS.
+
+\subsection{Uniform-Cost Search}
+
+UCS áp dụng nguyên lý của Dijkstra trên đồ thị trạng thái~\cite{dijkstra1959}.
+Mỗi phần tử trong hàng đợi ưu tiên chứa $(g,counter,state,path)$; biến
+\texttt{counter} phân xử khi các giá trị ưu tiên bằng nhau mà không cần so sánh
+hai trạng thái. Từ điển \texttt{best\_g} lưu chi phí nhỏ nhất đã biết. Phần
+tử có $g$ lớn hơn giá trị hiện tại trong \texttt{best\_g} đã lỗi thời, nên bị
+bỏ qua và không tính là một nút mở rộng.
+
+UCS tối thiểu hóa tổng chi phí chuẩn, khác mục tiêu số hành động của BFS. Mọi chi phí ở
+Bảng~\ref{tab:cost} đều không âm; \texttt{best\_g} chỉ cập nhật khi tìm được
+đường có chi phí nhỏ hơn, nên \textsc{SwitchCube} với chi phí 0 không tạo vòng
+lặp cập nhật vô hạn.
+
+\begin{algorithm}[H]
+\caption{Uniform-Cost Search}
+\label{alg:ucs}
+\begin{algorithmic}[1]
+\Function{UCS}{$engine,start,cost$}
+\State $\mathit{frontier}\gets\{(0,0,start,\langle\rangle)\}$ (min-heap)
+\State $\mathit{bestG}[start]\gets0$; $\mathit{counter}\gets0$
+\While{$\mathit{frontier}$ không rỗng}
+    \State $(g,k,s,\mathit{path})\gets\operatorname{pop}(\mathit{frontier})$
+    \If{$g>\mathit{bestG}[s]$} \State \textbf{continue} \EndIf
+    \If{$s$ là Goal} \State \Return $(\mathit{path},g)$ \EndIf
+    \State tăng $expanded$
+    \ForAll{$(a,t)\in$ \texttt{engine.get\_successors(s)}}
+        \State $\mathit{newG}\gets g+cost(s,a,t)$
+        \If{$\mathit{newG}<\mathit{bestG}.\operatorname{get}(t,\infty)$}
+            \State $\mathit{bestG}[t]\gets\mathit{newG}$
+            \State $\mathit{counter}\gets\mathit{counter}+1$
+            \State $\mathit{path}'\gets\mathit{path}\mathbin{\|}\langle a\rangle$
+            \State $\operatorname{push}(\mathit{frontier},(\mathit{newG},\mathit{counter},t,\mathit{path}'))$
+        \EndIf
+    \EndFor
+\EndWhile
+\State \Return \textsc{NoSolution}
+\EndFunction
+\end{algorithmic}
+\end{algorithm}
+
+Trên đồ thị hữu hạn với chi phí cạnh không âm, UCS đầy đủ và tối ưu theo tổng
+chi phí. Bản cài đặt sao chép chuỗi \texttt{path} khi đưa một đường tốt hơn
+vào hàng đợi ưu tiên. Nếu $L$ là độ dài đường lưu lớn nhất, mỗi lần sao chép
+có thể tốn $O(L)$; vì vậy bộ nhớ dành cho các phần tử chờ xét có thể tới
+$O((|V|+|E|)L)$, còn thời gian có thêm phần sao chép bên cạnh thao tác hàng
+đợi ưu tiên. UCS có thể chọn thêm hành động đổi khối với chi phí 0 hoặc tránh
+ô Fragile có chi phí 2 để giảm tổng chi phí.
+
+\subsection{A* Search}
+
+A* chọn trạng thái theo giá trị ưu tiên
+\begin{equation}
+f(n)=g(n)+h(n),
+\end{equation}
+trong đó $g$ là chi phí từ trạng thái đầu, dùng cùng hàm chi phí với UCS, còn
+$h$ ước lượng chi phí còn lại tới Goal. Heuristic \emph{chấp nhận được}
+(admissible) nếu không vượt chi phí tối ưu còn lại; heuristic \emph{nhất quán}
+(consistent) nếu ước lượng tại mỗi trạng thái không vượt chi phí của một cạnh
+cộng ước lượng ở trạng thái kế tiếp. Phạm vi áp dụng của cận dưới $h$ được chứng
+minh bên dưới.
+
+Mỗi phần tử trong hàng đợi ưu tiên có dạng $(f,g,counter,state)$.
+\texttt{best\_g} lưu đường rẻ nhất đã biết; khi tìm được giá trị $g$ nhỏ hơn,
+A* có thể đưa cùng trạng thái vào hàng đợi lần nữa. Trạng thái đó có thể được
+mở rộng lại, nên số lần mở rộng có thể lớn hơn số trạng thái phân biệt $|V|$.
+\texttt{came\_from} lưu quan hệ truy vết mà không sao chép cả đường đi vào mỗi
+phần tử. Cấu trúc này dựa trên A* tìm kiếm trên đồ thị của Hart, Nilsson và
+Raphael~\cite{hart1968}.
+
+\subsubsection{Heuristic cho khối nguyên}
+
+Gọi $C(B)$ là tâm khối: $(r,c)$ khi đứng, $(r,c+0{,}5)$ khi nằm ngang và
+$(r+0{,}5,c)$ khi nằm dọc. Với đường đi không kích hoạt Split Switch, mỗi
+lần lăn dịch chuyển tâm theo khoảng cách Manhattan tối đa 1,5 và có chi phí
+ít nhất 1. Vì thế, tổng chi phí để tâm tới ô đích $g$ không nhỏ hơn giá trị sau;
+điều kiện phải đứng trên $g$ chỉ có thể làm số bước tăng thêm:
+\begin{equation}
+h_{normal}(B,g)=\frac{\lVert C(B)-g\rVert_1}{1{,}5}.
+\end{equation}
+Đây là cận dưới cho đường đi không dịch chuyển tức thời. Một lần kích hoạt
+Split Switch có thể đổi vị trí khối vượt quá giới hạn dịch chuyển tâm nêu trên.
+
+\subsubsection{Heuristic cho hai khối đơn vị}
+
+Hai khối đơn vị ở $P_a,P_b$ phải kề trực giao để có thể ghép lại trước khi
+khối nguyên hoàn thành màn chơi. Nếu khoảng cách giữa chúng là $d$, cần ít nhất
+$\max(0,d-1)$ lần di chuyển một khối để đưa chúng đến vị trí ghép; đổi khối
+đang điều khiển có chi phí 0 nhưng không đổi vị trí. Trên đường đi không dịch
+chuyển tức thời, tổng khoảng cách Manhattan của hai khối tới đích giảm tối đa
+3 trong một lần lăn khối nguyên và tối đa 1 trong một lần di chuyển khối đơn
+vị. Mỗi lần di chuyển có chi phí ít nhất 1. Cả hai đại lượng đều là cận dưới,
+nên ta lấy giá trị lớn hơn:
+\begin{equation}
+h_{split}(P_a,P_b,g)=\max\left(\max(0,\lVert P_a-P_b\rVert_1-1),
+\frac{\lVert P_a-g\rVert_1+\lVert P_b-g\rVert_1}{3}\right).
+\end{equation}
+
+Trong bản cài đặt, $h_{direct}(s,x)$ áp dụng công thức tương ứng ở trên cho
+khối nguyên hoặc hai khối đơn vị, với ô đích tạm $x$. Gọi $T_q$ là cặp vị trí
+dịch chuyển của Split Switch $q$. Heuristic mặc định là
+\begin{equation}
+h(s)=\min\left(h_{direct}(s,g),1+\min_q h_{split}(T_q,g)\right),
+\end{equation}
+và bỏ nhánh thứ hai nếu màn chơi không có Split Switch. Đây là cận dưới theo
+hàm chi phí chuẩn ở Bảng~\ref{tab:cost}. Xét một đường đi bất kỳ $\pi$ từ $s$
+đến Goal. Nếu không có lần dịch chuyển tức thời nào, các cận hình học ở trên cho
+$h_{direct}(s,g)\leq\operatorname{cost}(\pi)$. Nếu có dịch chuyển tức thời, xét
+\emph{lần dịch chuyển cuối} tại $q$. Hành động kích hoạt này có chi phí ít nhất
+1; đoạn còn lại không có dịch chuyển tức thời và có chi phí ít nhất
+$h_{split}(T_q,g)$. Nếu hai vị trí đích kề nhau, $h_{split}$ bằng cận theo tâm
+của khối vừa ghép vì Goal có tọa độ nguyên; việc ghép ngay vẫn giữ cận dưới.
+
+Các hành động trước lần dịch chuyển tức thời cuối có chi phí không âm. Do đó
+$h(s)\leq\operatorname{cost}(\pi)$ trong cả hai trường hợp, kể cả khi đường đi
+dùng nhiều Split Switch. Ô Void, cầu đóng và ô Fragile chỉ loại bớt đường hoặc
+tăng chi phí; chúng không làm mất cận dưới. Lấy đường tối ưu cho
+$h(s)\leq h^*(s)$ trên mọi màn chơi hợp lệ với hàm chi phí chuẩn. Lập luận này
+không chứng minh tính nhất quán của heuristic.
+
+\begin{algorithm}[H]
+\caption{A* với cập nhật đường tốt hơn}
+\label{alg:astar}
+\begin{algorithmic}[1]
+\Function{AStar}{$engine,start,cost,h$}
+\State $\mathit{frontier}\gets\{(h(start),0,0,start)\}$ (min-heap)
+\State $\mathit{bestG}[start]\gets0$; $\mathit{cameFrom}\gets\varnothing$
+\State $\mathit{counter}\gets0$
+\While{$\mathit{frontier}$ không rỗng}
+    \State $(f,g,k,s)\gets\operatorname{pop}(\mathit{frontier})$
+    \If{$g>\mathit{bestG}[s]$} \State \textbf{continue} \EndIf
+    \If{$s$ là Goal} \State \Return \Call{Reconstruct}{$\mathit{cameFrom},s$} \EndIf
+    \State tăng $expanded$
+    \ForAll{$(a,t)\in$ \texttt{engine.get\_successors(s)}}
+        \State $\mathit{newG}\gets g+cost(s,a,t)$
+        \If{$\mathit{newG}<\mathit{bestG}.\operatorname{get}(t,\infty)$}
+            \State $\mathit{bestG}[t]\gets\mathit{newG}$
+            \State $\mathit{cameFrom}[t]\gets(s,a)$
+            \State $\mathit{counter}\gets\mathit{counter}+1$
+            \State $f'\gets\mathit{newG}+h(t)$
+            \State $\operatorname{push}(\mathit{frontier},(f',\mathit{newG},\mathit{counter},t))$
+        \EndIf
+    \EndFor
+\EndWhile
+\State \Return \textsc{NoSolution}
+\EndFunction
+\end{algorithmic}
+\end{algorithm}
+
+Khi $h=0$, A* trở thành UCS; nhóm dùng trường hợp này làm mốc kiểm thử. Với
+heuristic mặc định và hàm chi phí chuẩn, A* trả về đường đi có tổng chi phí
+nhỏ nhất trên đồ thị hữu hạn, kể cả khi có nhiều lần dịch chuyển tức thời. Kết
+luận này đòi hỏi thuật toán được chạy đến khi lấy một trạng thái đích ra khỏi
+hàng đợi, không bị hủy, hết thời gian hoặc chạm giới hạn nút. Bảo đảm này không
+tự áp dụng cho hàm chi phí hoặc heuristic tùy chỉnh không thỏa điều kiện chấp
+nhận được. Việc mở lại trạng thái còn có thể làm tăng thời gian và bộ nhớ; hiệu
+quả thực tế được đánh giá ở Mục~\ref{sec:results}.

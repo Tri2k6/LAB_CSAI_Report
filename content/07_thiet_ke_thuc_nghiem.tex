@@ -1,0 +1,89 @@
+\section{Thiết kế thực nghiệm}
+\label{sec:experiment}
+
+\subsection{Câu hỏi đánh giá và bộ màn chơi}
+
+Thực nghiệm so sánh bốn thuật toán theo thời gian, bộ nhớ, số nút mở rộng và
+chất lượng lời giải. Nhóm xem heuristic có giúp A* mở rộng ít nút hơn UCS và BFS
+hay không, và chi phí không đều có khiến UCS chọn đường khác BFS hay không.
+Trường hợp DFS được xem xét theo sự đánh đổi giữa tốc độ và chất lượng lời giải.
+Các nhận xét chỉ dựa trên 15 màn chơi cố định, được chia theo cơ chế ở
+Bảng~\ref{tab:level-groups}.
+
+\begin{table}[H]
+\centering
+\caption{Các nhóm màn chơi dùng trong thực nghiệm}
+\label{tab:level-groups}
+\small
+\begin{tabularx}{\textwidth}{@{}l l X@{}}
+\toprule
+\textbf{Nhóm} & \textbf{Màn chơi} & \textbf{Đặc trưng} \\
+\midrule
+Cơ bản & 01--04 & Floor, Void, Goal và ba tư thế khối \\
+Nâng cao, không tách khối & 05, 06, 11, 12, 13 & Fragile, cầu, Soft/Heavy Switch \\
+Tách và ghép khối & 07, 08, 14 & Tách khối, đổi khối đơn vị, ghép khối và cầu \\
+Kết hợp & 09, 10, 15 & Fragile, công tắc, cầu và tách/ghép khối \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\subsection{Môi trường thực nghiệm}
+
+Thực nghiệm được tiến hành ngày \benchmarkdate\ trên máy tính chạy Linux
+x86\_64, sử dụng bộ xử lý Intel Core i7-12650H và 15 GiB RAM. Chương trình
+chạy bằng \benchmarkpython\ trong môi trường ảo Python. Toàn bộ thuật toán
+được đánh giá trên cùng máy, cùng phiên bản chương trình và cùng bộ 15 màn chơi.
+Cấu hình phần cứng và phần mềm được giữ như nhau giữa các lượt đo nhằm giảm
+sai khác do môi trường khi so sánh.
+
+\subsection{Quy trình và kiểm soát công bằng}
+
+Công cụ chạy thực nghiệm duyệt 15 màn chơi, bốn thuật toán BFS/DFS/UCS/A* và ba
+lần lặp cho từng cặp, tổng cộng 180 lượt. Mỗi lượt tạo một \texttt{GameEngine}
+mới và lấy trạng thái đầu. Các lượt được đo tuần tự để mỗi phiên tìm kiếm dùng
+riêng \texttt{tracemalloc}. Không đặt giới hạn thời gian hoặc số nút. Các bộ
+giải dùng cùng màn chơi, bộ luật, thứ tự sinh trạng thái kế tiếp và cách đo;
+UCS/A* dùng chung hàm chi phí chuẩn. Thời gian dựng hình và phát lại không nằm
+trong phép đo. CSV từng lượt lưu kết quả của mỗi lượt; CSV tổng hợp tính trung
+bình và độ lệch chuẩn tổng thể bằng \texttt{statistics.pstdev} trên các lượt
+\texttt{FOUND}.
+
+\subsection{Chỉ số đánh giá}
+
+Bốn nhóm chỉ số trong Bảng~\ref{tab:metrics} tách hiệu năng tìm kiếm khỏi chất
+lượng đường đi. Nhóm chất lượng gồm ba đại lượng: số bước di chuyển, số hành
+động và tổng chi phí.
+
+\begin{table}[H]
+\centering
+\caption{Bốn nhóm chỉ số đánh giá thuật toán}
+\label{tab:metrics}
+\small
+\renewcommand{\arraystretch}{1.18}
+\begin{tabularx}{\textwidth}{@{}l>{\raggedright\arraybackslash}X@{}}
+\toprule
+\textbf{Chỉ số} & \textbf{Cách đo} \\
+\midrule
+Thời gian tìm kiếm & Đo bằng \texttt{perf\_counter}, đơn vị mili giây; không gồm tải màn chơi, dựng hình, ghi CSV hoặc phát lại \\
+\addlinespace[2pt]
+Bộ nhớ đỉnh & Lượng cấp phát Python cao nhất trừ mức ban đầu, đo bằng \texttt{tracemalloc}; không phải tổng bộ nhớ tiến trình (RSS) \\
+\addlinespace[2pt]
+Số nút mở rộng & Phần tử hợp lệ được lấy khỏi tập chờ xét và được dùng để sinh trạng thái kế tiếp; không tính trạng thái đích và phần tử lỗi thời \\
+\addlinespace[2pt]
+Chất lượng lời giải & \texttt{solution\_length} đếm hành động di chuyển; \texttt{action\_count} tính cả \textsc{SwitchCube}; \texttt{solution\_cost} dùng hàm chi phí của thuật toán \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\subsection{Phương pháp xác minh lời giải}
+
+Bộ kiểm thử tự động đạt 203/203 trường hợp trong môi
+trường chạy này. Cả 180 lượt đo đều trả \texttt{FOUND}. Công cụ chạy thực
+nghiệm chỉ ghi chỉ số, không lưu chuỗi hành động hoặc tự phát lại trong lượt
+đo. Tập lệnh kiểm tra báo cáo đối chiếu 180 dòng CSV từng lượt, 60 dòng CSV
+tổng hợp, ba lần lặp cho mỗi cặp và các giá trị trung bình, độ lệch chuẩn. Sau
+đó, tập lệnh giải lại một lần cho từng cặp màn chơi--thuật toán và dùng
+\texttt{verify\_solution} áp từng hành động qua \texttt{GameEngine} tới Goal:
+60/60 lời giải hợp lệ. Thời gian xác minh độc lập không được cộng vào thời gian
+tìm kiếm chính thức; luồng GUI xác minh trước khi phát lại như đã trình bày ở
+Mục~\ref{sec:implementation}.

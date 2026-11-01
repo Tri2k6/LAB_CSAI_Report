@@ -1,0 +1,57 @@
+% Bảng 1: đóng góp thực tế theo từng thành viên.
+\section*{Bảng đóng góp}
+\addcontentsline{toc}{section}{Bảng đóng góp}
+\label{sec:contributions}
+
+\newcolumntype{Z}[1]{>{\centering\arraybackslash}m{#1}}
+\newcolumntype{J}[1]{>{\setlength{\parskip}{0pt}\arraybackslash}m{#1}}
+\newcommand{\contribitem}[1]{%
+    \par\noindent\hangindent=1.1em\hangafter=1%
+    \makebox[1.1em][l]{\textbullet}#1\par%
+}
+
+\begin{table}[H]
+\centering
+\caption{Công việc và sản phẩm đóng góp của các thành viên}
+\label{tab:contributions}
+\footnotesize
+\setlength{\tabcolsep}{5pt}
+\renewcommand{\arraystretch}{1.15}
+\begin{tabular}{|Z{0.20\textwidth}|J{0.60\textwidth}|Z{0.13\textwidth}|}
+\hline
+\textbf{Thành viên} &
+\centering\textbf{Công việc và sản phẩm đã thực hiện} &
+\shortstack[c]{\textbf{Mức độ}\\\textbf{hoàn thành}} \\
+\hline
+\shortstack[c]{\textbf{\memberone}\\\memberoneid} &
+\contribitem{Thiết kế kiến trúc hệ thống và quy ước dữ liệu dùng chung cho các bộ giải.}
+\contribitem{Xây dựng \texttt{SolverManager}, bộ xác minh lời giải và kiểm thử tích hợp.}
+\contribitem{Triển khai công cụ chạy thực nghiệm; xuất CSV, bảng tổng hợp và biểu đồ.}
+\contribitem{Thiết kế và xây dựng các màn chơi nâng cao 11--15.}
+\contribitem{Biên soạn các phần tổng quan, thiết kế hệ thống, kết quả và thảo luận; tích hợp báo cáo bằng \LaTeX.} &
+\memberonecompletion \\
+\hline
+\shortstack[c]{\textbf{\memberfour}\\\memberfourid} &
+\contribitem{Hiện thực A* và heuristic cho khối nguyên, khối tách và dịch chuyển tức thời.}
+\contribitem{Phát triển GUI 3D, bộ điều khiển, luồng nền và chức năng phát lại; xây dựng màn 08--10.}
+\contribitem{Viết kiểm thử cho A*, heuristic và tương tác giao diện.}
+\contribitem{Viết kịch bản và thực hiện video demo.}
+\contribitem{Trình bày thuật toán A*, thiết kế GUI/phát lại và phân tích thời gian cùng số nút mở rộng.} &
+\memberfourcompletion \\
+\hline
+\shortstack[c]{\textbf{\memberthree}\\\memberthreeid} &
+\contribitem{Hiện thực Fragile, cầu, ba loại công tắc và cơ chế tách--ghép khối.}
+\contribitem{Xây dựng hàm chi phí 0/1/2, bộ giải UCS, bộ dựng hình và hoạt ảnh; xây dựng màn 05--07.}
+\contribitem{Viết kiểm thử cho luật nâng cao, hàm chi phí và UCS.}
+\contribitem{Trình bày cơ chế nâng cao, hàm chi phí, UCS và phân tích kết quả bộ nhớ.} &
+\memberthreecompletion \\
+\hline
+\shortstack[c]{\textbf{\membertwo}\\\membertwoid} &
+\contribitem{Xây dựng mô hình trạng thái, bộ nạp và bộ kiểm tra dữ liệu màn chơi.}
+\contribitem{Hiện thực chuyển động cơ bản trong \texttt{GameEngine}, BFS và DFS; xây dựng màn 01--04.}
+\contribitem{Viết kiểm thử cho mô hình, bộ luật và hai bộ giải.}
+\contribitem{Trình bày mô hình hóa bài toán, mã giả BFS/DFS và phân tích kết quả của hai thuật toán.} &
+\membertwocompletion \\
+\hline
+\end{tabular}
+\end{table}
